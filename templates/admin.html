@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rate board — Zain Bazaar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='shop.css') }}">
+<style>
+body{background:var(--paper);color:var(--ink)}
+.abar{background:var(--ink);color:var(--paper);position:sticky;top:0;z-index:20}
+.abar__in{max-width:960px;margin:0 auto;padding:14px var(--pad);display:flex;align-items:center;gap:14px}
+.abar__t{font-family:var(--display);font-weight:800;font-size:19px;margin-right:auto}
+.abar__t span{color:var(--turmeric)}
+.abar a{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.abar a:hover{color:var(--turmeric)}
+.page{max-width:960px;margin:0 auto;padding:26px var(--pad) 90px}
+.flash{background:var(--leaf);color:var(--ink);padding:12px 16px;border-radius:6px;font-weight:600;font-size:14.5px;margin-bottom:20px}
+.block{background:#fff;border:1px solid var(--paper-2);border-radius:8px;margin-bottom:22px;overflow:hidden}
+.block__h{padding:16px 20px;border-bottom:1px solid var(--paper-2);display:flex;align-items:baseline;gap:12px;flex-wrap:wrap}
+.block__h h2{font-family:var(--display);font-weight:800;font-size:21px;margin:0;margin-right:auto}
+.block__h p{margin:0;font-size:13px;color:#5C6B60}
+.pad{padding:16px 20px}
+.trow{display:grid;grid-template-columns:1fr 108px 74px 40px;gap:12px;align-items:center;padding:11px 20px;border-bottom:1px solid var(--paper-2)}
+.trow:last-of-type{border-bottom:none}
+.trow__n{min-width:0}
+.trow__en{font-weight:600;font-size:15px;line-height:1.25}
+.trow__ml{font-family:var(--display);font-size:13.5px;color:#5C6B60;line-height:1.35}
+.money{position:relative}
+.money::before{content:"₹";position:absolute;left:11px;top:50%;transform:translateY(-50%);font-family:var(--mono);color:#5C6B60;font-size:14px}
+input[type=text],input[type=number],input[type=password]{
+  font-family:var(--mono);font-size:15px;width:100%;
+  padding:9px 11px;border:1.5px solid var(--paper-2);border-radius:6px;
+  background:var(--paper);color:var(--ink);
+}
+.money input{padding-left:26px;font-weight:600}
+input:focus{outline:none;border-color:var(--ink)}
+.unit{font-family:var(--mono);font-size:12px;color:#5C6B60;white-space:nowrap}
+.chk{display:flex;justify-content:center}
+.chk input{width:19px;height:19px;accent-color:var(--ink);cursor:pointer}
+.bar{position:sticky;bottom:0;background:var(--turmeric);padding:14px 20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.bar span{font-family:var(--mono);font-size:12.5px;color:#4A3000;margin-right:auto}
+.btn--ink{background:var(--ink);color:var(--paper)}
+.btn--ink:hover{background:#0A241B}
+.newgrid{display:grid;gap:10px;grid-template-columns:1fr}
+@media(min-width:700px){.newgrid{grid-template-columns:1.3fr 1.3fr .8fr .8fr 1fr auto}}
+.lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#5C6B60;display:block;margin-bottom:5px}
+select{font-family:var(--mono);font-size:15px;width:100%;padding:9px 11px;border:1.5px solid var(--paper-2);border-radius:6px;background:var(--paper);color:var(--ink)}
+.del{background:none;border:none;color:var(--matta);cursor:pointer;font-size:19px;line-height:1;padding:4px}
+.del:hover{color:#7A2A18}
+.ord{padding:13px 20px;border-bottom:1px solid var(--paper-2)}
+.ord:last-child{border-bottom:none}
+.ord__top{display:flex;gap:12px;font-family:var(--mono);font-size:12px;color:#5C6B60;margin-bottom:5px}
+.ord__top b{color:var(--ink);margin-left:auto;font-variant-numeric:tabular-nums}
+.ord__l{font-size:14px;line-height:1.6}
+.empty{padding:30px 20px;text-align:center;color:#5C6B60;font-size:14px}
+</style>
+</head>
+<body>
+
+<header class="abar">
+  <div class="abar__in">
+    <div class="abar__t">Zain <span>Bazaar</span> · rate board</div>
+    <a href="{{ url_for('index') }}" target="_blank">View shop ↗</a>
+    <a href="{{ url_for('logout') }}">Sign out</a>
+  </div>
+</header>
+
+<div class="page">
+
+  {% with msgs = get_flashed_messages() %}
+    {% for m in msgs %}<div class="flash">{{ m }}</div>{% endfor %}
+  {% endwith %}
+
+  <!-- prices -->
+  <form method="post" action="{{ url_for('save_prices') }}">
+    <div class="block">
+      <div class="block__h">
+        <h2>Today's rates</h2>
+        <p>Last updated {{ rates_updated }}</p>
+      </div>
+      {% for it in items %}
+      <div class="trow">
+        <div class="trow__n">
+          <div class="trow__en">{{ it.en }}</div>
+          <div class="trow__ml">{{ it.ml }} · {{ it.cat }}</div>
+        </div>
+        <div class="money">
+          <input type="number" step="0.5" min="0" name="price_{{ it.id }}"
+                 value="{{ it.price | round(2) }}" aria-label="Price of {{ it.en }}">
+        </div>
+        <div class="unit">per {{ it.unit }}</div>
+        <div class="chk">
+          <input type="checkbox" name="active_{{ it.id }}" {% if it.active %}checked{% endif %}
+                 title="Show on the shop page" aria-label="Show {{ it.en }} on the shop page">
+        </div>
+      </div>
+      {% endfor %}
+      <div class="bar">
+        <span>Untick an item to hide it while it's out of stock.</span>
+        <button class="btn btn--ink" type="submit">Save rates</button>
+      </div>
+    </div>
+  </form>
+
+  <!-- add item -->
+  <div class="block">
+    <div class="block__h"><h2>Add an item</h2></div>
+    <form method="post" action="{{ url_for('add_item') }}" class="pad">
+      <div class="newgrid">
+        <div><label class="lbl" for="en">Name</label><input type="text" id="en" name="en" required placeholder="Beetroot"></div>
+        <div><label class="lbl" for="ml">Malayalam</label><input type="text" id="ml" name="ml" placeholder="ബീറ്റ്റൂട്ട്"></div>
+        <div><label class="lbl" for="unit">Unit</label><input type="text" id="unit" name="unit" value="1 kg"></div>
+        <div><label class="lbl" for="price">Price ₹</label><input type="number" id="price" name="price" step="0.5" min="0" value="0"></div>
+        <div><label class="lbl" for="cat">Section</label>
+          <select id="cat" name="cat">
+            <option>Vegetables</option><option>Fruits</option><option selected>Provisions</option>
+          </select>
+        </div>
+        <div style="display:flex;align-items:flex-end"><button class="btn btn--ink" type="submit">Add</button></div>
+      </div>
+    </form>
+    <div style="border-top:1px solid var(--paper-2)">
+      {% for it in items %}
+      <div class="trow" style="grid-template-columns:1fr auto">
+        <div class="trow__n"><div class="trow__en">{{ it.en }}</div><div class="trow__ml">{{ it.cat }} · ₹{{ it.price | round(2) }} per {{ it.unit }}</div></div>
+        <form method="post" action="{{ url_for('delete_item', item_id=it.id) }}"
+              onsubmit="return confirm('Remove {{ it.en }} from the board?')">
+          <button class="del" type="submit" aria-label="Remove {{ it.en }}">×</button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- shop details -->
+  <div class="block">
+    <div class="block__h"><h2>Shop details</h2></div>
+    <form method="post" action="{{ url_for('save_settings') }}" class="pad">
+      <label class="lbl" for="wa">WhatsApp number — country code first, digits only</label>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <input type="text" id="wa" name="wa_number" value="{{ wa_number }}"
+               placeholder="919846000000" style="max-width:260px">
+        <button class="btn btn--ink" type="submit">Save</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- orders -->
+  <div class="block">
+    <div class="block__h">
+      <h2>Recent order lists</h2>
+      <p>What customers built before sending to WhatsApp</p>
+    </div>
+    {% if orders %}
+      {% for o in orders %}
+      <div class="ord">
+        <div class="ord__top"><span>{{ o.placed.replace('T', ' · ')[:16] }}</span><b>₹{{ o.total | round(0) | int }}</b></div>
+        <div class="ord__l">{% for l in o.lines %}{{ l.en }} × {{ l.qty }}{% if not loop.last %} · {% endif %}{% endfor %}</div>
+      </div>
+      {% endfor %}
+    {% else %}
+      <div class="empty">No orders logged yet. They'll appear here once customers start using the rate board.</div>
+    {% endif %}
+  </div>
+
+</div>
+</body>
+</html>

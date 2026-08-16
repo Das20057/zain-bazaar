@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zain Bazaar — Provisions, fruits &amp; vegetables · Manal, Kannur</title>
+<meta name="description" content="Zain Bazaar, Max Nursery Garden Road, Manal, Kannur. Household provisions, fresh fruits and vegetables. Free home delivery. Open daily 7:00 AM – 11:00 PM.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@500;600;800&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='shop.css') }}">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="wrap topbar__in">
+    <div class="topbar__name">Zain <span>Bazaar</span></div>
+    <div class="status">
+      <span class="dot dot--live" id="statusDot"></span>
+      <span id="statusText">Checking hours…</span>
+    </div>
+    <a class="btn btn--sun btn--sm" href="tel:+{{ wa_number }}">Call the shop</a>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="board">
+        <p class="eyebrow">Manal · Max Nursery Garden Road · Kannur</p>
+        <h1 class="board__ml">സെയ്ൻ ബസാർ</h1>
+        <p class="board__en">Zain Bazaar — Provisions &amp; Fresh Produce</p>
+        <div class="board__rule"></div>
+        <p class="board__line">Your everyday provisions, fruits and vegetables — picked in the morning, at your door by evening. Delivery is free across Manal.</p>
+        <div class="board__acts">
+          <a class="btn btn--sun" href="https://wa.me/{{ wa_number }}?text=Hello%20Zain%20Bazaar%2C%20I%27d%20like%20to%20place%20an%20order%20for%20home%20delivery.">Order on WhatsApp</a>
+          <a class="btn btn--ghost" href="#rates">See today's rates</a>
+        </div>
+        <div class="facts">
+          <span><span class="star">★</span> <b>4.5</b> on Justdial</span>
+          <span>Open daily <b>7:00 AM – 11:00 PM</b></span>
+          <span><b>Free</b> home delivery</span>
+          <span>Parking <b>available</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="rates" id="rates">
+    <div class="wrap">
+      <div class="rates__head">
+        <div>
+          <p class="eyebrow">The board outside, online</p>
+          <h2 class="h2">Today's <em>rates</em></h2>
+          <p class="sub">Tap an item to add it to your order. When you're done, send the list to the shop on WhatsApp — no app, no account.</p>
+        </div>
+      </div>
+
+      <div class="filters" id="filters" role="group" aria-label="Filter by section">
+        <button class="chip" data-cat="All" aria-pressed="true">All</button>
+        {% for c in cats %}
+        <button class="chip" data-cat="{{ c }}" aria-pressed="false">{{ c }}</button>
+        {% endfor %}
+      </div>
+
+      <div class="ledger">
+        <div class="ledger__bar">
+          <span id="ledgerLabel">All items</span>
+          <span>Rates updated {{ rates_updated }}</span>
+        </div>
+        <div id="rows"></div>
+        <div class="ledger__foot">Rates move with the market. The shop will confirm the final amount before delivery.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="aisles" id="store">
+    <div class="wrap">
+      <p class="eyebrow">What's in store</p>
+      <h2 class="h2">Six aisles, one <em>stop</em></h2>
+      <div class="grid">
+        <div class="card"><p class="ml">പലവ്യഞ്ജനം</p><h3>Rice &amp; provisions</h3><p>Matta, jaya and ponni rice by the sack or the kilo. Dals, flours, sugar, salt, spices.</p></div>
+        <div class="card"><p class="ml">പച്ചക്കറി</p><h3>Vegetables</h3><p>Stocked fresh each morning — the everyday ones, plus what the season brings in.</p></div>
+        <div class="card"><p class="ml">പഴവർഗ്ഗങ്ങൾ</p><h3>Fruits</h3><p>Nendran and robusta bananas, apples, oranges, grapes, seasonal mangoes.</p></div>
+        <div class="card"><p class="ml">പാൽ &amp; മുട്ട</p><h3>Dairy &amp; eggs</h3><p>Milk, curd, butter, ghee, paneer and farm eggs. Ask for a standing daily order.</p></div>
+        <div class="card"><p class="ml">വീട്ടുസാധനങ്ങൾ</p><h3>Home &amp; cleaning</h3><p>Soaps, detergents, phenyl, brooms, bulbs, batteries and the small things you forget.</p></div>
+        <div class="card"><p class="ml">ലഘുഭക്ഷണം</p><h3>Snacks &amp; drinks</h3><p>Banana chips, mixture, biscuits, tea, coffee, soft drinks and cold water.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="strip" id="visit">
+    <div class="wrap">
+      <div class="strip__grid">
+        <div class="panel">
+          <p class="eyebrow">How delivery works</p>
+          <h2 class="h2" style="font-size:clamp(23px,3.4vw,32px)">Free to your <em>door</em></h2>
+          <ul class="plist">
+            <li><b>Step 1</b><span>Send your list on WhatsApp, or call the shop and read it out.</span></li>
+            <li><b>Step 2</b><span>We pack it, weigh it and message you the total.</span></li>
+            <li><b>Step 3</b><span>Pay by UPI or cash when it reaches you. Delivery costs nothing.</span></li>
+            <li><b>Coming in</b><span>Same day for orders before 6:00 PM. Next morning after that.</span></li>
+          </ul>
+        </div>
+        <div class="panel">
+          <p class="eyebrow">Hours &amp; address</p>
+          <table class="hours" id="hoursTable"></table>
+          <p class="foot__addr" style="margin-top:18px">Max Nursery Garden Road,<br>Manal, Kannur, Kerala</p>
+          <a class="btn btn--ghost btn--sm" style="margin-top:14px" href="https://www.google.com/maps/search/?api=1&amp;query=Zain+Bazaar+Max+Nursery+Garden+Road+Manal+Kannur" target="_blank" rel="noopener">Open in Maps</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot__grid">
+      <div>
+        <p class="foot__name">സെയ്ൻ ബസാർ</p>
+        <p class="foot__addr">Zain Bazaar · Max Nursery Garden Road, Manal, Kannur</p>
+      </div>
+      <div class="foot__acts">
+        <a class="btn btn--paper" href="tel:+{{ wa_number }}">Call the shop</a>
+        <a class="btn btn--sun" href="https://wa.me/{{ wa_number }}">WhatsApp</a>
+      </div>
+    </div>
+    <p class="legal">Open daily 7:00 AM – 11:00 PM · Free home delivery · Parking available</p>
+  </div>
+</footer>
+
+<div class="cartbar" id="cartbar">
+  <div class="cartbar__in">
+    <span class="cartbar__n" id="cartCount">0 items</span>
+    <button class="btn btn--paper" id="openSheet">Review order</button>
+  </div>
+</div>
+
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
+  <div class="sheet__card">
+    <div class="sheet__top">
+      <h2 class="sheet__title" id="sheetTitle">Your order</h2>
+      <button class="x" id="closeSheet" aria-label="Close order">×</button>
+    </div>
+    <div class="sheet__list" id="sheetList"></div>
+    <div class="sheet__foot">
+      <div class="total"><span>Estimated total</span><span id="total">₹0</span></div>
+      <p class="note">An estimate at today's rates. The shop weighs everything and confirms the final amount before it leaves.</p>
+      <a class="btn btn--wa" id="waSend" href="#">Send order on WhatsApp</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const ITEMS = {{ items_json | safe }};
+const WA_NUMBER = "{{ wa_number }}";
+</script>
+<script src="{{ url_for('static', filename='shop.js') }}"></script>
+</body>
+</html>

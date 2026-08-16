@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sign in — Zain Bazaar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Chettan+2:wght@600;800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="{{ url_for('static', filename='shop.css') }}">
+<style>
+body{display:grid;place-items:center;min-height:100vh;padding:24px}
+.card{background:var(--ink-2);border:1px solid var(--ink-3);border-radius:10px;padding:32px;width:100%;max-width:380px}
+.card h1{font-family:var(--display);font-weight:800;font-size:26px;margin:0 0 6px}
+.card h1 span{color:var(--turmeric)}
+.card p{color:var(--muted);font-size:14px;margin:0 0 22px}
+label{font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--turmeric);display:block;margin-bottom:7px}
+input{font-family:var(--mono);font-size:16px;width:100%;padding:12px 13px;border:1.5px solid var(--ink-3);border-radius:6px;background:var(--ink);color:var(--paper)}
+input:focus{outline:none;border-color:var(--turmeric)}
+.err{background:var(--matta);color:var(--paper);padding:11px 14px;border-radius:6px;font-size:14px;margin-bottom:18px}
+</style>
+</head>
+<body>
+<form class="card" method="post">
+  <h1>Zain <span>Bazaar</span></h1>
+  <p>Sign in to update today's rates.</p>
+  {% with msgs = get_flashed_messages() %}
+    {% for m in msgs %}<div class="err">{{ m }}</div>{% endfor %}
+  {% endwith %}
+  <label for="pw">Password</label>
+  <input type="password" id="pw" name="password" autofocus required>
+  <button class="btn btn--sun" type="submit" style="width:100%;justify-content:center;margin-top:18px;padding:13px">Sign in</button>
+</form>
+</body>
+</html>
